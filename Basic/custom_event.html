@@ -1,0 +1,54 @@
+<html>
+<head>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+            background-color: #f0f0f0;
+        }
+
+        #clickButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #clickButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="clickButton">Click Me</button>
+    <script>
+        const customEvent = new Event('customEventTriggered');
+        document.addEventListener('customEventTriggered', () => {
+            alert('Custom event triggered after 5 clicks!');
+            console.log('Event triggered after 5 clicks!');
+        });
+
+        let clickCount = 0;
+        const button = document.getElementById('clickButton');
+        button.addEventListener('click', () => {
+            clickCount++;
+
+            if (clickCount === 5) {
+                document.dispatchEvent(customEvent);
+                clickCount = 0;
+            }
+            console.log(`Button clicked ${clickCount} times`);
+        });
+    </script>
+
+</body>
+</html>

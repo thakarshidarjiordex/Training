@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        
+        function processUserData(userData) {
+            if (!userData) {
+                console.log('No data');
+                return false;
+            }
+            
+            if (userData.status !== 'active') {
+                console.log('Inactive user');
+                return false;
+            }
+
+            // 2. Optional chaining avoids deeply nested "if" statements
+            const age = userData.profile?.age;
+            if (!age) {
+                console.log('No profile');
+                return false;
+            }
+
+            if (age <= 18) {
+                console.log('Too young');
+                return false;
+            }
+
+            const name = userData.profile.name ?? 'Guest';
+            console.log(`Access granted to: ${name}`);
+            alert(`Access granted to: ${name}`);
+            return true;
+        }
+
+        let person = {"status" : "active" , "profile" : {"age" : 74, "name" : "abc" }};
+
+        processUserData(person)
+
+    </script>
+    
+</body>
+</html>

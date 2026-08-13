@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Array Shopping Cart</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; display: flex; gap: 40px; }
+        .section { border: 1px solid #ccc; padding: 20px; border-radius: 8px; width: 300px; }
+        .item { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
+        button { cursor: pointer; padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        button.remove { background-color: #dc3545; }
+        .total { font-weight: bold; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Products Catalog -->
+    <div class="section">
+        <h2>Products</h2>
+        <div id="products-list"></div>
+    </div>
+
+    <!-- Shopping Cart Display -->
+    <div class="section">
+        <h2>Your Cart</h2>
+        <div id="cart-list"></div>
+        <div class="total" id="cart-total">Total: $0.00</div>
+    </div>
+
+    <script>
+        // 1. Array storing available catalog products
+        const products = [
+            { id: 1, name: "Laptop", price: 999.99 },
+            { id: 2, name: "Headphones", price: 149.99 },
+            { id: 3, name: "Wireless Mouse", price: 29.99 }
+        ];
+
+        // 2. The fundamental Cart Array tracking active choices
+        let cart = [];
+
+        // Function to display the item catalog on the screen
+        function displayProducts() {
+            const listElement = document.getElementById("products-list");
+            listElement.innerHTML = products.map(product => `
+                <div class="item">
+                    <span>${product.name} - $${product.price}</span>
+                    <button onclick="addToCart(${product.id})">Add</button>
+                </div>
+            `).join("");
+        }
+
+        // Logic for adding an item into the array structure
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = cart.find(item => item.id === productId);
+
+            if (cartItem) {
+                cartItem.quantity += 1; // Increment metric if already listed
+            } else {
+                cart.push({ ...product, quantity: 1 }); // Append tracking structure
+            }
+            renderCart();
+        }
+
+        // Logic for dropping an item quantity or purging it
+        function removeFromCart(productId) {
+            const cartItem = cart.find(item => item.id === productId);
+            
+            if (cartItem.quantity > 1) {
+                cartItem.quantity -= 1;
+            } else {
+                cart = cart.filter(item => item.id !== productId); // Remove from list
+            }
+            renderCart();
+        }
+
+        // Calculates sums and renders updated data objects to the screen 
+        function renderCart() {
+            const cartList = document.getElementById("cart-list");
+            const cartTotal = document.getElementById("cart-total");
+
+            if (cart.length === 0) {
+                cartList.innerHTML = "<p>Cart is empty</p>";
+                cartTotal.innerText = "Total: $0.00";
+                return;
+            }
+
+            // Print individual array entries
+            cartList.innerHTML = cart.map(item => `
+                <div class="item">
+                    <span>${item.name} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})</span>
+                    <button class="remove" onclick="removeFromCart(${item.id})">Remove</button>
+                </div>
+            `).join("");
+
+            // Compute total price value out of array values
+            const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.innerText = `Total: $${grandTotal.toFixed(2)}`;
+        }
+
+        // Initialize display execution
+        displayProducts();
+        renderCart();
+    </script>
+</body>
+</html>

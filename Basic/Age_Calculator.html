@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function getDOB(dobInput, currentDateInput) {
+
+            if (!dobInput || !currentDateInput) {
+                alert('Please enter both Date of Birth and Current Date.');
+                return;
+            }
+
+            const dob = new Date(dobInput);
+            const currentDate = new Date(currentDateInput);
+
+            let age = currentDate.getFullYear() - dob.getFullYear();
+            const monthDifference = currentDate.getMonth() - dob.getMonth();
+
+            if (monthDifference < 0 || (monthDifference === 0 && currentDate.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            alert(`Your age is ${age} years.`);
+        }
+
+
+        let dob = prompt("Enter your date of birth (YYYY-MM-DD):");
+        let currentDate = prompt("Enter the current date (YYYY-MM-DD):");
+        getDOB(dob, currentDate);
+    </script>
+</body>
+
+</html>

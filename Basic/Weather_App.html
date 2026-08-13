@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Weather App</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #74ebd5, #9face6);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .container {
+                width: 350px;
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                text-align: center;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+
+            input {
+                padding: 12px;
+                width: 60%;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
+
+            button {
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                background: #4a69bd;
+                color: white;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background: #3867d6;
+            }
+
+            #loading {
+                display: none;
+                margin: 20px;
+            }
+
+            #weather {
+                display: none;
+                margin-top: 20px;
+            }
+
+            #error {
+                color: red;
+                margin-top: 15px;
+            }
+
+            .temperature {
+                font-size: 40px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+
+            <h1>Weather App 🌤️</h1>
+
+            <input type="text" id="cityInput" placeholder="Enter city">
+
+            <button onclick="searchWeather()">Search</button>
+
+            <p id="loading">Loading...</p>
+
+            <p id="error"></p>
+
+            <div id="weather">
+                <h2 id="city"></h2>
+                <div class="temperature"><span id="temperature"></span>°C</div>
+                <p>Condition:<span id="condition"></span></p>
+                <p>Humidity:<span id="humidity"></span>%</p>
+            </div>
+
+        </div>
+
+        <script>
+            const weatherData = {
+
+                ahmedabad: {
+                    temperature: 32,
+                    condition: "Sunny ☀️",
+                    humidity: 45
+                },
+
+                mumbai: {
+                    temperature: 29,
+                    condition: "Cloudy ☁️",
+                    humidity: 75
+                },
+
+                delhi: {
+                    temperature: 34,
+                    condition: "Sunny ☀️",
+                    humidity: 40
+                },
+
+                surat: {
+                    temperature: 31,
+                    condition: "Rainy 🌧️",
+                    humidity: 80
+                },
+
+                rajkot: {
+                    temperature: 33,
+                    condition: "Clear Sky 🌤️",
+                    humidity: 50
+                }
+            };
+
+            function getWeather(city) {
+
+                return new Promise((resolve, reject) => {
+
+                    setTimeout(() => {
+                        const data = weatherData[city.toLowerCase()];
+
+                        if (data) {
+                            resolve(data);
+                        } else {
+                            reject("City not found!");
+                        }
+                    }, 2000);
+                });
+            }
+
+            async function searchWeather() {
+                const cityInput = document.getElementById("cityInput");
+                const city = cityInput.value.trim();
+                const loading = document.getElementById("loading");
+                const weather = document.getElementById("weather");
+                const error = document.getElementById("error");
+
+                weather.style.display = "none";
+                error.textContent = "";
+
+                if (city === "") {
+                    error.textContent = "Please enter a city.";
+                    return;
+                }
+
+                loading.style.display = "block";
+
+                try {
+                    const data = await getWeather(city);
+                    document.getElementById("city").textContent = city;
+                    document.getElementById("temperature").textContent = data.temperature;
+                    document.getElementById("condition").textContent = data.condition;
+                    document.getElementById("humidity").textContent = data.humidity;
+
+                    weather.style.display = "block";
+                } catch (err) {
+                    error.textContent = err;
+                } finally {
+                    loading.style.display = "none";
+                }
+            }
+        </script>
+    </body>
+</html>

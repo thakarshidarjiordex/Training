@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Employee Management System using Objects
+        const employeeManager = {
+        employees: [],
+
+        // Add an employee
+        addEmployee(id, name, role, salary) {
+            this.employees.push({ id, name, role, salary });
+            console.log(`Added: ${name}`);
+        },
+
+        // List all employees
+        listEmployees() {
+            console.log("Employee List:");
+            this.employees.forEach(emp => {
+            console.log(`ID: ${emp.id}, Name: ${emp.name}, Role: ${emp.role}, Salary: $${emp.salary}`);
+            });
+        },
+
+        // Update an employee
+        updateEmployee(id, updatedData) {
+            const emp = this.employees.find(e => e.id === id);
+            if (emp) {
+            Object.assign(emp, updatedData);
+            console.log(`Updated ID ${id}`);
+            } else {
+            console.log("Employee not found");
+            }
+        },
+
+        // Delete an employee
+        deleteEmployee(id) {
+            const index = this.employees.findIndex(e => e.id === id);
+            if (index !== -1) {
+            console.log(`Deleted: ${this.employees[index].name}`);
+            this.employees.splice(index, 1);
+            } else {
+            console.log("Employee not found");
+            }
+        }
+        };
+
+        // --- Example Usage ---
+        employeeManager.addEmployee(1, "Alice Smith", "Developer", 75000);
+        employeeManager.addEmployee(2, "Bob Jones", "Designer", 65000);
+
+        // View list
+        employeeManager.listEmployees();
+
+        // Update Alice's salary
+        employeeManager.updateEmployee(1, { salary: 80000 });
+
+        // Delete Bob
+        employeeManager.deleteEmployee(2);
+
+        // View final list
+        employeeManager.listEmployees();
+
+    </script>
+</body>
+</html>
