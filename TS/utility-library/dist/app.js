@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const library_1 = require("./library");
+console.log((0, library_1.capitalize)("typescript"));
+console.log((0, library_1.reverse)("hello"));
+console.log((0, library_1.countCharacters)("JavaScript"));
+console.log((0, library_1.square)(5));
+console.log((0, library_1.isEven)(10));
+console.log((0, library_1.findMax)(20, 50));
+console.log((0, library_1.getCurrentYear)());
+console.log((0, library_1.getCurrentDate)());
